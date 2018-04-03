@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * The median of a dataset of integers is the midpoint value of the dataset for which an equal number of integers are less than and greater than the value. To find the median, you must first sort your dataset of integers in non-decreasing order, then:
@@ -140,10 +138,10 @@ public class RunningMedian {
      * @param rightHeap - the right heap, it is a MinHeap
      * @return          Will return the median
      */
-    static double getMedian(int crtElem, double median, Heap leftHeap, Heap rightHeap)
+    static double getMedian(int crtElem, double median, PriorityQueue<Integer> leftHeap, PriorityQueue<Integer> rightHeap)
     {
         // Are heaps balanced? If yes, sig will be 0
-        int sig = compare(leftHeap.getSize(), rightHeap.getSize());
+        int sig = compare(leftHeap.size(), rightHeap.size());
         switch(sig)
         {
         case 1: // There are more elements in left (max) heap
@@ -154,15 +152,15 @@ public class RunningMedian {
                 // Because there are more elements in the left heap,
                 // we will have to Remove top element from left heap and
                 // insert into right heap (make room for the new element insert)
-                rightHeap.insert(leftHeap.pop());
+                rightHeap.add(leftHeap.poll());
 
                 // current element fits in left (max) heap
-                leftHeap.insert(crtElem);
+                leftHeap.add(crtElem);
             } else {
                 // current element fits in right (min) heap
                 // we don't remove new elements from right, since already
                 // left size > right size.
-                rightHeap.insert(crtElem);
+                rightHeap.add(crtElem);
             }
 
             // Both heaps are balanced, they should have the same size now.
@@ -174,7 +172,7 @@ public class RunningMedian {
 
             if( crtElem < median ) { // current element fits in left (max) heap
                 // left heap has now more elements, hence it makes sense to take the median from there
-                leftHeap.insert(crtElem);
+                leftHeap.add(crtElem);
                 // after insert, the heap will be heapified, hence,
                 // we dont know for sure if we gonna peek the same inserted element,
                 // due to the reheapify
@@ -182,7 +180,7 @@ public class RunningMedian {
             } else {
                 // current element fits in right (min) heap
                 // right heap now has more elements, hence it makes sense to take the median from there
-                rightHeap.insert(crtElem);
+                rightHeap.add(crtElem);
                 // after insert, the heap will be heapified, hence,
                 // we dont know for sure if we gonna peek the same inserted element,
                 // due to the reheapify
@@ -196,13 +194,13 @@ public class RunningMedian {
                  // in order to make room for the current element.
 
             if( crtElem < median ) { // current element fits in left (max) heap
-                leftHeap.insert(crtElem);
+                leftHeap.add(crtElem);
             } else {
                 // Remove top element from right heap and
                 // insert into left heap
-                leftHeap.insert(rightHeap.pop());
+                leftHeap.add(rightHeap.poll());
                 // current element fits in right (min) heap
-                rightHeap.insert(crtElem);
+                rightHeap.add(crtElem);
             }
 
             // Both heaps are balanced
@@ -224,6 +222,35 @@ public class RunningMedian {
 
         // TODO use Heaps with dynamic size, so then we can use it as an
         // "online" algorithm
+        PriorityQueue<Integer> leftQueue = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                if(o1 == o2)
+                    return 0;
+                if(o1 < o2)
+                    return 1;
+                if(o1 > o2)
+                    return -1;
+
+                return 0;
+            }
+        });
+
+        PriorityQueue<Integer> rightQueue = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                if(o1 == o2)
+                    return 0;
+                if(o1 < o2)
+                    return -1;
+                if(o1 > o2)
+                    return 1;
+
+                return 0;
+            }
+        });
+
+
         Heap leftHeap  = new MaxHeap(size);
         Heap rightHeap = new MinHeap(size);
 
@@ -231,7 +258,7 @@ public class RunningMedian {
         {
             //System.out.println("\n Adding elem : [" + arr[i] + "] ...");
             //System.out.println("Status : LeftHeap : " + leftHeap.printHeap() + " RightHeap : " + rightHeap.printHeap());
-            median = getMedian(arr[i], median, leftHeap, rightHeap);
+            median = getMedian(arr[i], median, leftQueue, rightQueue);
             //System.out.println("After adding [" + arr[i] + "] median is now [" + median + "]. LeftHeap : " + leftHeap.printHeap() + " RightHeap : " + rightHeap.printHeap());
             System.out.println(median);
         }

@@ -1,6 +1,4 @@
-import datastructures.GraphAdjList;
-import datastructures.GraphDirectWeighted;
-import datastructures.GraphMat;
+import datastructures.GraphWeighted;
 
 import java.util.*;
 
@@ -87,7 +85,7 @@ public class ShortestPathBFS {
             int noNodes = in.nextInt() + 1; // because they are 0 indexed.
             int noEdges = in.nextInt();
 
-            GraphDirectWeighted graph = new GraphDirectWeighted(noNodes, noEdges);
+            GraphWeighted graph = new GraphWeighted(noNodes, noEdges, false);
 
             for (int j = 0; j < noEdges; j++) {
                 int edgeSrc = in.nextInt();

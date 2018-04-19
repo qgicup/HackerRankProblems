@@ -5,16 +5,31 @@ import java.util.*;
 /**
  * Created with ♥ by georgeplaton on 19.04.18.
  */
-public class GraphDirectWeighted {
+public class GraphWeighted {
 
     List<GraphEdge> edges;
+    List<List<Integer>> adjLst;
 
     int noVertices, noEdges;
+    boolean isDirectGraph;
 
-    public GraphDirectWeighted(int noVertices, int noEdges) {
+    public GraphWeighted(int noVertices, int noEdges, boolean isDirectGraph) {
         this.noVertices = noVertices;
         this.noEdges = noEdges;
         edges = new ArrayList<GraphEdge>();
+        this.isDirectGraph = isDirectGraph;
+    }
+
+    /**
+     * Assumes that the graph is not directed.
+     * @param noVertices        - Number of vertices
+     * @param noEdges           - Number of edges
+     */
+    public GraphWeighted(int noVertices, int noEdges) {
+        this.noVertices = noVertices;
+        this.noEdges = noEdges;
+        edges = new ArrayList<GraphEdge>();
+        this.isDirectGraph = false;
     }
 
     // Getters/Setters
@@ -43,10 +58,25 @@ public class GraphDirectWeighted {
         this.noEdges = noEdges;
     }
 
+    /**
+     * Adding an edge into the graph.
+     * If it's a :
+     *      1) Directed Graph -> requires you to add the edge only once
+     *      2) Undirected Graph -> requires you to add the edge 2 times, on both sides, otherwise you won't have a undirected graph.
+     *
+     * !IMPORTANT!
+     * @param src           - Source node
+     * @param dest          - Target node
+     * @param weight        - Weight associated with this edge
+     */
     public void addEdge(int src, int dest, int weight) {
         if(src > noVertices || dest > noVertices)
             return;
         edges.add(new GraphEdge(src, dest, weight));
+
+        // !IMPORTANT! for undirected edges, you need to add edge from both sides!
+        if(!isDirectGraph)
+            edges.add(new GraphEdge(dest, src, weight));
     }
 
     // bfs, dfs, shortest path

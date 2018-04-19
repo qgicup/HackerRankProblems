@@ -97,9 +97,16 @@ public class ShortestPathBFS {
             }
 
             int startingNode = in.nextInt();
+            //System.out.println("Starting with node :" + startingNode);
 
-            // calculate shortest path from this node to all other nodes.
-            int[] paths = graph.shortestPathUsingBellmanFord(startingNode);
+            // BFS algorithm
+            int[] paths = graph.shortestPathUsingBFS(startingNode);
+
+            // Djikstra algorithm
+            //int[] paths = graph.shortestPathUsingDjikstra(startingNode);
+
+            // Bellman-Ford algorithm
+            //int[] paths = graph.shortestPathUsingBellmanFord(startingNode);
 
             for(int k = 1; k < noNodes; k++) {
                 int value = paths[k];
@@ -116,4 +123,3 @@ public class ShortestPathBFS {
         }
     }
 }
-

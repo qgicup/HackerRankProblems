@@ -5,7 +5,7 @@ package datastructures;
  */
 public class GraphNode {
     int no;
-    int weight;
+    int weight;     /// this can be the weight of this node, or the weight from a specific node to it, in a adjancency list representation
 
     public GraphNode(int no, int weight) {
         this.no = no;

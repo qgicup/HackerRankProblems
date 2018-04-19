@@ -1,4 +1,6 @@
 import datastructures.GraphAdjList;
+import datastructures.GraphDirectWeighted;
+import datastructures.GraphMat;
 
 import java.util.*;
 
@@ -64,18 +66,6 @@ import java.util.*;
  */
 public class ShortestPathBFS {
 
-    /**
-     * Standard GraphAdjList data structure,
-     * with edges represented as adjancency list.
-     */
-
-    public void buildGraph() {
-
-    }
-
-    public void calculateGraphShortestPathToNode(int nodeNr) {
-
-    }
 
     /**
      *
@@ -94,29 +84,36 @@ public class ShortestPathBFS {
         int noQueries = in.nextInt();
 
         for (int i = 0; i < noQueries; i++) {
-            int noNodes = in.nextInt();
+            int noNodes = in.nextInt() + 1; // because they are 0 indexed.
             int noEdges = in.nextInt();
 
-            GraphAdjList graph = new GraphAdjList(noNodes);
+            GraphDirectWeighted graph = new GraphDirectWeighted(noNodes, noEdges);
 
             for (int j = 0; j < noEdges; j++) {
                 int edgeSrc = in.nextInt();
                 int edgeDest = in.nextInt();
-                graph.addEdge(edgeSrc, edgeDest);
+
+                graph.addEdge(edgeSrc, edgeDest, 6);
             }
 
             int startingNode = in.nextInt();
 
             // calculate shortest path from this node to all other nodes.
-            List<Integer> paths = graph.getShortestPathFromSrcToAllDest(startingNode);
+            int[] paths = graph.shortestPathUsingBellmanFord(startingNode);
 
-            for(Integer path : paths) {
-                if(path == 0)
+            for(int k = 1; k < noNodes; k++) {
+                int value = paths[k];
+                if(k == startingNode)
+                    continue;
+
+                if(value == Integer.MAX_VALUE)
                     System.out.print("-1 ");
                 else
-                    System.out.print("6 ");
+                    System.out.print(value + " ");
             }
+
+            System.out.println();
         }
     }
-
 }
+

@@ -1,5 +1,7 @@
 package datastructures;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
 import java.util.*;
 
 /**
@@ -130,7 +132,8 @@ public class GraphAdjList
          * 2) Initialize Min Heap with source vertex as root (the distance value assigned to source vertex is 0). The distance value assigned to all other vertices is INF (infinite).
          * 3) While Min Heap is not empty, do following
          * …..a) Extract the vertex with minimum distance value node from Min Heap. Let the extracted vertex be u.
-         * …..b) For every adjacent vertex v of u, check if v is in Min Heap. If v is in Min Heap and distance value is more than weight of u-v plus distance value of u, then update the distance value of v.
+         * …..b) For every adjacent vertex v of u, check if v is in Min Heap.
+         *      If v is in Min Heap and distance value is more than weight of u-v plus distance value of u, then update the distance value of v.
          */
 
         PriorityQueue<GraphNode> minHeap = new PriorityQueue<GraphNode>(new Comparator<GraphNode>() {
@@ -154,6 +157,24 @@ public class GraphAdjList
 
         // Start with source and do DFS
         distances[start.getNo()] = 0;
+        minHeap.add(start);
+
+        while(!minHeap.isEmpty()) {
+            GraphNode nextVertex = minHeap.poll();
+            Iterator<GraphNode> iterator1 = adj[nextVertex.getNo()].listIterator();
+            while (iterator1.hasNext()) {
+                GraphNode v = iterator1.next();
+                int distance = v.weight + distances[nextVertex.getNo()];
+
+                if(minHeap.contains(v)
+                        && distance < distances[v.getNo()]) {
+                    distances[v.getNo()] = distance;
+
+                }
+            }
+        }
+
+
 
         // 1. Go through all the adjacent vertices, starting from src
         Iterator<GraphNode> iterator1 = adj[start.getNo()].listIterator();
@@ -212,11 +233,11 @@ public class GraphAdjList
      * @param startingNode      - the node to start the search from.
      * @return
      */
-    public List<Integer> getShortestPathFromSrcToAllDest(int startingNode) {
+    public List<Integer> getShortestPathFromSrcToAllDest(GraphNode startingNode) {
         ArrayList<Integer> list = new ArrayList<Integer>();
 
         for(int i = 0; i < noVertices; i++) {
-            if(i !=  startingNode) {
+            if(i !=  startingNode.getNo()) {
                 list.add(shortestPathDjikstraFromSrcToTarget(startingNode, i));
             }
         }

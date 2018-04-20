@@ -1,3 +1,4 @@
+import datastructures.QueueUsing1Stack;
 import datastructures.QueueUsing2Stacks;
 
 import java.util.Scanner;
@@ -63,7 +64,7 @@ import java.util.Scanner;
 public class QueueImplementations  {
 
     public static void main(String[] args) {
-        QueueUsing2Stacks<Integer> queue = new QueueUsing2Stacks<Integer>();
+        QueueUsing1Stack<Integer> queue = new QueueUsing1Stack<Integer>();
 
         Scanner scan = new Scanner(System.in);
         int n = scan.nextInt();

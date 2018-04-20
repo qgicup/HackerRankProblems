@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -64,6 +65,45 @@ import java.util.Scanner;
  */
 public class SumOf2Numbers {
 
+    static int indexOf(int[] array, int value, int excludeThis) {
+
+        for(int i = 0; i <  array.length; i++) {
+            if(array[i] == value && i != excludeThis)
+                return i;
+        }
+
+        return -1;
+    }
+
+    /**
+     *
+     * @param array
+     * @param money
+     */
+    static void solveUsingBinarySearch(int[] array, int money) {
+        int[] arraySorted = array.clone();
+        Arrays.sort(arraySorted);
+
+        // The idea is that we go through the array
+        // and search the complement in the cloned sorted array.
+        // If we find it, then we try to get it's index.
+        // it's important that the found element, is not the one we already have.
+
+        for(int i = 0; i < arraySorted.length; i++) {
+            int complement = money - arraySorted[i];
+            int position = Arrays.binarySearch(arraySorted, i + 1, arraySorted.length, complement); // doing N searches.
+
+            if(position >= 0 && position < arraySorted.length && complement == arraySorted[position]) {
+                // find the indexes now.
+                int indexCrtElement = indexOf(array, arraySorted[i], -1) + 1;
+                int indexOtherElement = indexOf(array, complement, indexCrtElement - 1) + 1;
+
+                System.out.println(Math.min(indexCrtElement, indexOtherElement) + " " + Math.max(indexCrtElement, indexOtherElement));
+            }
+        }
+
+    }
+
     /**
      * We will try to find if 2 numbers sum up to a total amount.
      * We will use a HashMap, to see if the other number (total - selectedNumber), already exists in the HashMap. If yes, then we return their index.
@@ -72,7 +112,7 @@ public class SumOf2Numbers {
      * @param arr       - Array of costs
      * @param money     - The total money available
      */
-    static void solve(int[] arr, int money) {
+    static void solveUsingHashTables(int[] arr, int money) {
         // maps cost to index - the problem can be that 2 elements will have the same cost.
         HashMap<Integer, Integer> map = new HashMap<>();
 
@@ -102,7 +142,8 @@ public class SumOf2Numbers {
             for(int arr_i = 0; arr_i < n; arr_i++){
                 arr[arr_i] = in.nextInt();
             }
-            solve(arr, money);
+            //solveUsingHashTables(arr, money);
+            solveUsingBinarySearch(arr, money);
         }
         in.close();
     }

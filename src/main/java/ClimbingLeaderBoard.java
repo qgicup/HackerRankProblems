@@ -94,11 +94,11 @@ public class ClimbingLeaderBoard {
 
         int[] rankings = new int[alice.length];
         int rankingsIndex = alice.length - 1;
+        int j = 0;
 
         for(int i = rankings.length - 1; i >= 0; i--) { // going through Alice score's in decreasing order.
             int aliceScore = alice[i];
 
-            int j = 0;
             while(j < scoresUnique.size()) {
                 int crtScore = scoresUnique.get(j);
 
@@ -107,13 +107,17 @@ public class ClimbingLeaderBoard {
                         rankings[rankingsIndex--] = 1;
                     else
                         rankings[rankingsIndex--] = j + 1;
+
                     break;
                 }
                 j++;
             }
 
             if(j == scoresUnique.size())
-                rankings[rankingsIndex--] = j + 1;
+                if(rankingsIndex <= 0)
+                    System.out.println("oups");
+                else
+                    rankings[rankingsIndex--] = j + 1;
         }
 
         return rankings;

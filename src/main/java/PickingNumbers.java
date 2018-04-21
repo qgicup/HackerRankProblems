@@ -42,101 +42,6 @@ import java.util.Scanner;
 public class PickingNumbers {
 
     /**
-     * The idea to solve this problem is the following :
-     *  - create a frequency map of the elements.
-     *  - go through the frequency map values and select the top 2 frequencies
-     * @param a - Must not be null
-     * @return
-     */
-    static int pickingNumbers(int[] a) {
-        // Complete this function
-        HashMap<Integer, Integer> map = new HashMap();
-
-        // Generate the frequencies (O(n))
-        for(int i : a) {
-            if(map.containsKey(i))
-                map.put(i, map.get(i) + 1);
-            else
-                map.put(i, 1);
-        }
-
-        // Go through the map keys
-        // Now we have the map of frequencies, we need to find the elements with the highest frequency,
-        // that their index difference is at most 1.
-
-        int maxFrequency1 = -1;
-        int maxFrequencyIndex1 = -1;
-
-        int maxFrequency2 = -1;
-        int maxFrequencyIndex2 = -1;
-
-        for(Integer key : map.keySet()) { // O(n)
-            int crtFreq = map.get(key);
-            if(crtFreq > maxFrequency1) {
-
-                // check if we need to migrate old maxFrequency1 to maxFrequency2
-                if(maxFrequency1 > maxFrequency2) {
-                    maxFrequency2 = maxFrequency1;
-                    maxFrequencyIndex2 = maxFrequencyIndex1;
-                }
-
-                maxFrequency1 = crtFreq;
-                maxFrequencyIndex1 = key;
-
-            } else if (crtFreq > maxFrequency2) {
-                maxFrequency2 = crtFreq;
-                maxFrequencyIndex2 = key;
-            }
-        }
-
-        System.out.println(map);
-
-        return maxFrequency1 + maxFrequency2;
-    }
-
-    /**
-     * This function will attempt to find the optimal subsets of 2 elements
-     * with the highest frequency number, but which are close to one another.
-     * We can solve it using dynamic programming or recursivity.
-     *
-     * We have 2 arrays :
-     *  - values []         -> condition : need to be close to one another, with max 1 difference
-     *  - frequencies []    -> condition : need to maximize the frequencies
-     *
-     *  We will go through the array and find 2 consecutive numbers which have the biggest max frequency sum together
-     *
-     * @param values
-     * @param frequencies
-     * @return
-     */
-    int findOptimalSubsets(int[] values, int[] frequencies) {
-
-//        int max = 0;
-//        Arrays.sort
-//
-//        for(int i = 1; i < values.length; i++) {
-//
-//            if(Math.abs(values[i - 1]) )
-//
-//        }
-
-
-        return 0;
-    }
-
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int n = in.nextInt();
-        int[] a = new int[n];
-        for(int a_i = 0; a_i < n; a_i++){
-            a[a_i] = in.nextInt();
-        }
-        int result = picky(a);
-        System.out.println(result);
-        in.close();
-    }
-
-    /**
      * Will calculate if there are 2 subset elements with the maximum frequency.
      *
      * @param a     - an array of elements, unsorted
@@ -189,6 +94,20 @@ public class PickingNumbers {
 
         return max;
     }
+
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        int[] a = new int[n];
+        for(int a_i = 0; a_i < n; a_i++){
+            a[a_i] = in.nextInt();
+        }
+        int result = picky(a);
+        System.out.println(result);
+        in.close();
+    }
+
 
 
 }

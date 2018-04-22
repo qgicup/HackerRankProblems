@@ -1,3 +1,5 @@
+package graphs;
+
 import datastructures.GraphWeighted;
 
 import java.util.*;

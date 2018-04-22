@@ -1,3 +1,5 @@
+package strings;
+
 import java.util.Scanner;
 
 /**
@@ -155,7 +157,7 @@ public class LongestCommonSubsequenceProblem {
             for(int j = 0; j <= s2Length; j++) {
 
                 if(i == 0 || j == 0)    // It's important to consider here the "OR" operator, not "AND", in all dynamic programming problems! <3
-                    k[0][0] = 0;
+                    k[i][j] = 0;
 
                 else if(s1.charAt(i - 1) == s2.charAt(j - 1)) {     // here we have to calculate the previous elements going backwards! remember the formula above, it's not about the current elements.
                     k[i][j] = k[i - 1][j - 1] + 1;

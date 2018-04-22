@@ -9,58 +9,68 @@ import java.util.Scanner;
 public class MorganAndAString {
 
     /**
-     * We need to construct a string using the given parameters.
-     * The way to construct this string, is by taking the letters one by one, compare them, and then construct the final string
-     * @param a     - must not be null
-     * @param b     - must not be null
+     * Will compare A and B, and try to compare a lexigographically correct String as result.
+     * @param s1     - First string
+     * @param s2     - Second string
      * @return
      */
-    static String morganAndString(String a, String b) {
-        int aLength = a.length();
-        int bLength = b.length();
-        int aIndex = 0, bIndex = 0;
-        String result = "";
+    static String morganAndString(String s1, String s2) {
+        // Complete this function
+        int lenS1 = s1.length(), lenS2 = s2.length();
 
-        while(aIndex < aLength && bIndex < bLength) {
-            char charA = a.charAt(aIndex);
-            char charB = b.charAt(bIndex);
+        StringBuilder sb = new StringBuilder();
+        int indexS1 = 0, indexS2 = 0;
 
-            if(charA < charB) {
-                result = result + charA;
-                aIndex++;
-            } else if(charA > charB) {
-                result = result + charB;
-                bIndex++;
-            } else if(charA == charB) {
-                //result = result + charA;
-                result = result + charB;
-
-                //aIndex++;
-                bIndex++;
+        while (indexS1 < lenS1 && indexS2 < lenS2) {
+            if (s1.charAt(indexS1) < s2.charAt(indexS2)) {
+                sb.append(s1.charAt(indexS1++));
+            } else if (s1.charAt(indexS1) > s2.charAt(indexS2)) {
+                sb.append(s2.charAt(indexS2++));
+            } else {
+                if (compare(s1, indexS1 + 1, s2, indexS2 + 1)) {
+                    sb.append(s1.charAt(indexS1++));
+                    while (indexS1 < s1.length() && s1.charAt(indexS1) == s1.charAt(indexS1 - 1)) {
+                        sb.append(s1.charAt(indexS1++));
+                    }
+                } else {
+                    sb.append(s2.charAt(indexS2++));
+                    while (indexS2 < s2.length() && s2.charAt(indexS2) == s2.charAt(indexS2 - 1)) {
+                        sb.append(s2.charAt(indexS2++));
+                    }
+                }
             }
         }
 
-        // copy the remaining elements
-        if(aIndex < aLength) {
-            char[] charArray = a.substring(aIndex, aLength).toCharArray();
-            Arrays.sort(charArray);
-            for(int i = 0; i < charArray.length; i++) {
-                // Here take them in lexicographic order.
-                result = result + charArray[i];
-            }
+        if (indexS1 < lenS1) {
+            sb.append(s1.substring(indexS1));
         }
 
-
-        if(bIndex < bLength) {
-            char[] charArray = b.substring(bIndex, bLength).toCharArray();
-            Arrays.sort(charArray);
-            for(int i = 0; i < charArray.length; i++) {
-                // Here take them in lexicographic order.
-                result = result + charArray[i];
-            }
+        if (indexS2 < lenS2) {
+            sb.append(s2.substring(indexS2));
         }
 
-        return result; // BABABC
+        return sb.toString();
+    }
+
+    /**
+     * Will compare the 2 strings, by looking in the whole array, until it finds the first elements which are smaller.
+     * For example, if you have s1 = "AAADC" and s2 = "AAABC", then s1 > s2, because after you parse "AAA" sequence, you get "D" > "B".
+     *
+     * @param s1     - first string
+     * @param s1Index     - index of first string
+     * @param s2     - second string
+     * @param s2Index     - index of second string
+     * @return
+     */
+    private static boolean compare(String s1, int s1Index, String s2, int s2Index) {
+        while (s1Index < s1.length() && s2Index < s2.length()) {
+            if (s1.charAt(s1Index) < s2.charAt(s2Index)) return true;
+            else if (s1.charAt(s1Index) > s2.charAt(s2Index)) return false;
+            s1Index++;
+            s2Index++;
+        }
+
+        return s1Index == s1.length() ? false : true;
     }
 
     public static void main(String[] args) {
